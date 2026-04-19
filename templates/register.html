@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LexAI – Registrieren</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body class="auth-page">
+    <div class="auth-container">
+      <div class="auth-logo">
+        <span class="logo-icon">⚖️</span>
+        <h1>LexAI</h1>
+        <p
+          class="auth-subtitle"
+          data-de="Rechtsdokumente intelligent analysieren"
+          data-en="Intelligent Legal Document Analysis"
+        >
+          Rechtsdokumente intelligent analysieren
+        </p>
+      </div>
+
+      <div class="auth-card">
+        <div class="lang-switcher">
+          <button onclick="setLang('de')" id="btn-de" class="lang-btn active">
+            DE
+          </button>
+          <button onclick="setLang('en')" id="btn-en" class="lang-btn">
+            EN
+          </button>
+        </div>
+
+        <h2 data-de="Konto erstellen" data-en="Create Account">
+          Konto erstellen
+        </h2>
+
+        <div id="error-msg" class="alert alert-error hidden"></div>
+
+        <form id="register-form">
+          <div class="form-group">
+            <label data-de="Vollständiger Name" data-en="Full Name">
+              Vollständiger Name
+            </label>
+            <input
+              type="text"
+              id="full_name"
+              required
+              placeholder="Max Mustermann"
+            />
+          </div>
+
+          <div class="form-group">
+            <label data-de="E-Mail-Adresse" data-en="Email Address">
+              E-Mail-Adresse
+            </label>
+            <input
+              type="email"
+              id="email"
+              required
+              placeholder="name@kanzlei.de"
+            />
+          </div>
+
+          <div class="form-group">
+            <label data-de="Passwort" data-en="Password">Passwort</label>
+            <div class="input-password">
+              <input
+                type="password"
+                id="password"
+                required
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onclick="togglePassword()"
+                class="toggle-pass"
+              >
+                👁
+              </button>
+            </div>
+            <small
+              data-de="Mindestens 8 Zeichen"
+              data-en="At least 8 characters"
+            >
+              Mindestens 8 Zeichen
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label data-de="Bevorzugte Sprache" data-en="Preferred Language">
+              Bevorzugte Sprache
+            </label>
+            <select id="language">
+              <option value="de">Deutsch</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-primary btn-full" id="submit-btn">
+            <span data-de="Konto erstellen" data-en="Create Account"
+              >Konto erstellen</span
+            >
+          </button>
+        </form>
+
+        <p class="auth-link">
+          <span data-de="Bereits ein Konto?" data-en="Already have an account?"
+            >Bereits ein Konto?</span
+          >
+          <a href="/login" data-de="Anmelden" data-en="Sign In">Anmelden</a>
+        </p>
+      </div>
+    </div>
+
+    <script src="/static/js/i18n.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script>
+      document
+        .getElementById("register-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          await handleRegister(
+            document.getElementById("full_name").value,
+            document.getElementById("email").value,
+            document.getElementById("password").value,
+            document.getElementById("language").value,
+          );
+        });
+    </script>
+  </body>
+</html>

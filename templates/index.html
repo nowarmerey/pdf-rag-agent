@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LexAI – Legal Document Assistant</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body class="landing-page">
+    <nav class="nav">
+      <div class="nav-logo">
+        <span>⚖️</span>
+        <span>LexAI</span>
+      </div>
+      <div class="nav-actions">
+        <div class="lang-switcher">
+          <button onclick="setLang('de')" id="btn-de" class="lang-btn active">
+            DE
+          </button>
+          <button onclick="setLang('en')" id="btn-en" class="lang-btn">
+            EN
+          </button>
+        </div>
+        <a
+          href="/login"
+          class="btn-outline"
+          data-de="Anmelden"
+          data-en="Sign In"
+          >Anmelden</a
+        >
+        <a
+          href="/register"
+          class="btn-primary"
+          data-de="Kostenlos starten"
+          data-en="Start for Free"
+          >Kostenlos starten</a
+        >
+      </div>
+    </nav>
+
+    <main class="hero">
+      <div class="hero-content">
+        <span
+          class="hero-badge"
+          data-de="KI-gestützte Rechtsanalyse"
+          data-en="AI-Powered Legal Analysis"
+        >
+          KI-gestützte Rechtsanalyse
+        </span>
+        <h1
+          data-de="Rechtsdokumente verstehen – schnell und präzise"
+          data-en="Understand Legal Documents – Fast and Precise"
+        >
+          Rechtsdokumente verstehen –<br />schnell und präzise
+        </h1>
+        <p
+          data-de="LexAI analysiert Ihre Verträge, Gesetze und Rechtsdokumente mit künstlicher Intelligenz. Stellen Sie Fragen und erhalten Sie präzise Antworten."
+          data-en="LexAI analyzes your contracts, laws, and legal documents with artificial intelligence. Ask questions and get precise answers."
+        >
+          LexAI analysiert Ihre Verträge, Gesetze und Rechtsdokumente mit
+          künstlicher Intelligenz.
+        </p>
+        <div class="hero-actions">
+          <a
+            href="/register"
+            class="btn-primary btn-large"
+            data-de="Jetzt kostenlos starten"
+            data-en="Start for Free Now"
+          >
+            Jetzt kostenlos starten
+          </a>
+          <a
+            href="/login"
+            class="btn-outline btn-large"
+            data-de="Anmelden"
+            data-en="Sign In"
+            >Anmelden</a
+          >
+        </div>
+      </div>
+
+      <div class="hero-features">
+        <div class="feature-card">
+          <span class="feature-icon">📄</span>
+          <h3 data-de="PDF-Analyse" data-en="PDF Analysis">PDF-Analyse</h3>
+          <p
+            data-de="Laden Sie beliebige Rechtsdokumente hoch"
+            data-en="Upload any legal documents"
+          >
+            Laden Sie beliebige Rechtsdokumente hoch
+          </p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🔍</span>
+          <h3 data-de="Präzise Suche" data-en="Precise Search">
+            Präzise Suche
+          </h3>
+          <p
+            data-de="KI findet relevante Klauseln sofort"
+            data-en="AI finds relevant clauses instantly"
+          >
+            KI findet relevante Klauseln sofort
+          </p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🔒</span>
+          <h3 data-de="Sicher & Privat" data-en="Secure & Private">
+            Sicher & Privat
+          </h3>
+          <p
+            data-de="Ihre Dokumente bleiben privat"
+            data-en="Your documents stay private"
+          >
+            Ihre Dokumente bleiben privat
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <script src="/static/js/i18n.js"></script>
+    <script>
+      // إذا المستخدم مسجّل دخول، روّحه للـ Dashboard
+      const token = localStorage.getItem("lexai_token");
+      if (token) window.location.href = "/dashboard";
+    </script>
+  </body>
+</html>

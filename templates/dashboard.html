@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LexAI – Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body class="dashboard-page">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <span>⚖️</span>
+        <span class="logo-text">LexAI</span>
+      </div>
+
+      <div class="sidebar-section">
+        <button class="btn-new-chat" onclick="newChat()">
+          <span>＋</span>
+          <span data-de="Neue Anfrage" data-en="New Query">Neue Anfrage</span>
+        </button>
+      </div>
+
+      <div class="sidebar-section">
+        <p class="sidebar-label" data-de="Verlauf" data-en="History">Verlauf</p>
+        <div id="sessions-list"></div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <span class="user-avatar">👤</span>
+          <div>
+            <p id="user-name" class="user-name">...</p>
+            <p id="user-email" class="user-email">...</p>
+          </div>
+        </div>
+        <div class="sidebar-actions">
+          <button class="lang-btn-sm" onclick="setLang('de')" id="btn-de">
+            DE
+          </button>
+          <button class="lang-btn-sm" onclick="setLang('en')" id="btn-en">
+            EN
+          </button>
+          <button class="btn-logout" onclick="logout()">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Documents Panel -->
+      <div class="docs-panel">
+        <div class="docs-header">
+          <h3 data-de="Dokumente" data-en="Documents">Dokumente</h3>
+          <label class="btn-upload" for="file-input">
+            <span>↑</span>
+            <span data-de="Hochladen" data-en="Upload">Hochladen</span>
+          </label>
+          <input type="file" id="file-input" accept=".pdf" hidden />
+        </div>
+
+        <div id="upload-progress" class="upload-progress hidden">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <p id="progress-text">Uploading...</p>
+        </div>
+
+        <div id="documents-list" class="documents-list">
+          <div class="empty-state">
+            <span>📄</span>
+            <p data-de="Keine Dokumente" data-en="No documents">
+              Keine Dokumente
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Panel -->
+      <div class="chat-panel">
+        <div class="chat-header">
+          <h2
+            id="chat-title"
+            data-de="Rechtsdokument-Analyse"
+            data-en="Legal Document Analysis"
+          >
+            Rechtsdokument-Analyse
+          </h2>
+          <span class="powered-by">Powered by LexAI</span>
+        </div>
+
+        <div class="chat-messages" id="chat-messages">
+          <div class="welcome-message">
+            <span class="welcome-icon">⚖️</span>
+            <h3 data-de="Willkommen bei LexAI" data-en="Welcome to LexAI">
+              Willkommen bei LexAI
+            </h3>
+            <p
+              data-de="Laden Sie Rechtsdokumente hoch und stellen Sie Fragen dazu."
+              data-en="Upload legal documents and ask questions about them."
+            >
+              Laden Sie Rechtsdokumente hoch und stellen Sie Fragen dazu.
+            </p>
+          </div>
+        </div>
+
+        <div class="chat-input-area">
+          <div class="input-wrapper">
+            <textarea
+              id="question-input"
+              rows="1"
+              data-de-placeholder="Stellen Sie eine Frage zu Ihren Dokumenten..."
+              data-en-placeholder="Ask a question about your documents..."
+              placeholder="Stellen Sie eine Frage zu Ihren Dokumenten..."
+            >
+            </textarea>
+            <button id="send-btn" onclick="sendMessage()">
+              <span>➤</span>
+            </button>
+          </div>
+          <p
+            class="disclaimer"
+            data-de="LexAI ersetzt keine qualifizierte Rechtsberatung."
+            data-en="LexAI does not replace qualified legal advice."
+          >
+            LexAI ersetzt keine qualifizierte Rechtsberatung.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/js/i18n.js"></script>
+    <script src="/static/js/auth.js"></script>
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>

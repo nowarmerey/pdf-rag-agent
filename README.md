@@ -92,5 +92,5 @@ pdf-rag-agent/
 
 **Nawar Meree** - Full Stack Developer
 
-- GitHub: [@yourusername](https://github.com/nowarmerey)
-- LinkedIn: [your-linkedin](https://linkedin.com/in/nawar-meree-036491164)
+- GitHub: [@nowarmerey](https://github.com/nowarmerey)
+- LinkedIn: [nawar-meree-036491164](https://linkedin.com/in/nawar-meree-036491164)

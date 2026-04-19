@@ -11,7 +11,7 @@ client = chromadb.PersistentClient(path=CHROMA_DIR)
 
 def _get_embedding(text: str) -> list:
     result = genai.embed_content(
-        model="models/embedding-001",
+        model="models/gemini-embedding-001",
         content=text,
         task_type="retrieval_document"
     )
@@ -19,7 +19,7 @@ def _get_embedding(text: str) -> list:
 
 def _get_query_embedding(text: str) -> list:
     result = genai.embed_content(
-        model="models/embedding-001",
+        model="models/gemini-embedding-001",
         content=text,
         task_type="retrieval_query"
     )

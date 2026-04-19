@@ -1,16 +1,34 @@
 import chromadb
-from sentence_transformers import SentenceTransformer
-from app.core.config import CHROMA_DIR, COLLECTION_PREFIX, MAX_SEARCH_RESULTS
+import google.generativeai as genai
+from app.core.config import CHROMA_DIR, COLLECTION_PREFIX, MAX_SEARCH_RESULTS, GEMINI_API_KEY
 import uuid
 
-# تحميل النموذج مرة واحدة عند بدء التشغيل
-embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+# إعداد Gemini للـ Embeddings
+genai.configure(api_key=GEMINI_API_KEY)
 
 # إعداد ChromaDB
 client = chromadb.PersistentClient(path=CHROMA_DIR)
 
+def _get_embedding(text: str) -> list:
+    """توليد embedding باستخدام Gemini"""
+    result = genai.embed_content(
+        model="models/text-embedding-004",
+        content=text,
+        task_type="retrieval_document"
+    )
+    return result["embedding"]
+
+def _get_query_embedding(text: str) -> list:
+    """توليد embedding للسؤال"""
+    result = genai.embed_content(
+        model="models/text-embedding-004",
+        content=text,
+        task_type="retrieval_query"
+    )
+    return result["embedding"]
+
 def _get_user_collection(user_id: int):
-    """كل مستخدم عنده collection منفصلة - Multi-tenant"""
+    """كل مستخدم عنده collection منفصلة"""
     collection_name = f"{COLLECTION_PREFIX}_{user_id}_documents"
     return client.get_or_create_collection(
         name=collection_name,
@@ -18,13 +36,13 @@ def _get_user_collection(user_id: int):
     )
 
 def add_chunks_to_db(chunks: list[dict], user_id: int) -> int:
-    """إضافة chunks إلى Vector DB الخاص بالمستخدم"""
+    """إضافة chunks إلى Vector DB"""
     collection = _get_user_collection(user_id)
     texts     = [c["text"] for c in chunks]
     metadatas = [c["metadata"] for c in chunks]
     ids       = [str(uuid.uuid4()) for _ in chunks]
 
-    embeddings = embedding_model.encode(texts).tolist()
+    embeddings = [_get_embedding(text) for text in texts]
 
     collection.add(
         documents=texts,
@@ -36,17 +54,16 @@ def add_chunks_to_db(chunks: list[dict], user_id: int) -> int:
 
 def search_similar_chunks(query: str, user_id: int,
                           n_results: int = MAX_SEARCH_RESULTS) -> list[dict]:
-    """البحث في ملفات المستخدم فقط"""
+    """البحث في ملفات المستخدم"""
     collection = _get_user_collection(user_id)
 
-    # تحقق إن في documents أصلاً
     if collection.count() == 0:
         return []
 
-    query_embedding = embedding_model.encode([query]).tolist()
+    query_embedding = _get_query_embedding(query)
 
     results = collection.query(
-        query_embeddings=query_embedding,
+        query_embeddings=[query_embedding],
         n_results=min(n_results, collection.count()),
         include=["documents", "metadatas", "distances"]
     )
@@ -61,7 +78,7 @@ def search_similar_chunks(query: str, user_id: int,
     return chunks
 
 def get_user_documents(user_id: int) -> list[str]:
-    """قائمة ملفات المستخدم فقط"""
+    """قائمة ملفات المستخدم"""
     collection = _get_user_collection(user_id)
     results = collection.get(include=["metadatas"])
     if not results["metadatas"]:
@@ -69,7 +86,7 @@ def get_user_documents(user_id: int) -> list[str]:
     return list(set(m["source"] for m in results["metadatas"]))
 
 def delete_user_document(filename: str, user_id: int) -> int:
-    """حذف ملف من Vector DB الخاص بالمستخدم"""
+    """حذف ملف من Vector DB"""
     collection = _get_user_collection(user_id)
     results = collection.get(
         where={"source": filename},

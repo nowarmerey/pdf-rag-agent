@@ -10,18 +10,16 @@ genai.configure(api_key=GEMINI_API_KEY)
 client = chromadb.PersistentClient(path=CHROMA_DIR)
 
 def _get_embedding(text: str) -> list:
-    """توليد embedding باستخدام Gemini"""
     result = genai.embed_content(
-        model="models/text-embedding-004",
+        model="models/embedding-001",
         content=text,
         task_type="retrieval_document"
     )
     return result["embedding"]
 
 def _get_query_embedding(text: str) -> list:
-    """توليد embedding للسؤال"""
     result = genai.embed_content(
-        model="models/text-embedding-004",
+        model="models/embedding-001",
         content=text,
         task_type="retrieval_query"
     )

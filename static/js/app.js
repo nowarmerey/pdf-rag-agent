@@ -263,15 +263,28 @@ function addMessage(content, role, sources = []) {
   const div = document.createElement("div");
   div.className = `message ${role}-message`;
 
-  // تحويل Markdown بسيط
-  const formatted = content
-    .replace(/### (.*)/g, "<h4>$1</h4>")
-    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.*?)\*/g, "<em>$1</em>")
-    .replace(/\n/g, "<br>");
+  const formatted =
+    role === "assistant"
+      ? content
+          .replace(/^## (.*)/gm, "<h2>$1</h2>")
+          .replace(/^### (.*)/gm, "<h3>$1</h3>")
+          .replace(/^#### (.*)/gm, "<h4>$1</h4>")
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+          .replace(/\*(.*?)\*/g, "<em>$1</em>")
+          .replace(/`(.*?)`/g, "<code>$1</code>")
+          .replace(/^> (.*)/gm, "<blockquote>$1</blockquote>")
+          .replace(/^- (.*)/gm, "<li>$1</li>")
+          .replace(/(<li>.*<\/li>)/s, "<ul>$1</ul>")
+          .replace(/^─+$/gm, "<hr>")
+          .replace(/\n{2,}/g, "<br><br>")
+          .replace(/\n/g, "<br>")
+      : content;
 
   const sourcesHtml = sources.length
-    ? `<div class="sources"><span>📎</span> ${sources.join(", ")}</div>`
+    ? `<div class="sources">
+               <span>📎</span>
+               <span>${sources.join(" · ")}</span>
+           </div>`
     : "";
 
   div.innerHTML = `

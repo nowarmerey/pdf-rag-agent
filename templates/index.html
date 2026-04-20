@@ -3,15 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LexAI – Legal Document Assistant</title>
+    <title>LexAI – KI-gestützte Rechtsanalyse</title>
+    <meta
+      name="description"
+      content="LexAI analysiert Ihre Rechtsdokumente mit KI. Stellen Sie Fragen zu Verträgen, Gesetzen und rechtlichen Dokumenten."
+    />
     <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="icon" href="/favicon.ico" />
   </head>
   <body class="landing-page">
+    <!-- ═══ NAV ═══ -->
     <nav class="nav">
-      <div class="nav-logo">
+      <a class="nav-logo" href="/">
         <span>⚖️</span>
         <span>LexAI</span>
-      </div>
+      </a>
       <div class="nav-actions">
         <div class="lang-switcher">
           <button onclick="setLang('de')" id="btn-de" class="lang-btn active">
@@ -38,84 +44,418 @@
       </div>
     </nav>
 
-    <main class="hero">
+    <!-- ═══ HERO ═══ -->
+    <section class="hero">
       <div class="hero-content">
-        <span
-          class="hero-badge"
-          data-de="KI-gestützte Rechtsanalyse"
-          data-en="AI-Powered Legal Analysis"
-        >
-          KI-gestützte Rechtsanalyse
-        </span>
+        <div class="hero-badge">
+          <span>✨</span>
+          <span
+            data-de="KI-gestützte Rechtsanalyse"
+            data-en="AI-Powered Legal Analysis"
+          >
+            KI-gestützte Rechtsanalyse
+          </span>
+        </div>
+
         <h1
-          data-de="Rechtsdokumente verstehen – schnell und präzise"
-          data-en="Understand Legal Documents – Fast and Precise"
+          data-de="Rechtsdokumente verstehen –<br>schnell und präzise"
+          data-en="Understand Legal Documents –<br>Fast and Precise"
         >
           Rechtsdokumente verstehen –<br />schnell und präzise
         </h1>
+
         <p
-          data-de="LexAI analysiert Ihre Verträge, Gesetze und Rechtsdokumente mit künstlicher Intelligenz. Stellen Sie Fragen und erhalten Sie präzise Antworten."
-          data-en="LexAI analyzes your contracts, laws, and legal documents with artificial intelligence. Ask questions and get precise answers."
+          data-de="LexAI analysiert Ihre Verträge, Gesetze und Rechtsdokumente mit modernster KI. Stellen Sie Fragen auf Deutsch oder Englisch und erhalten Sie präzise Antworten in Sekunden."
+          data-en="LexAI analyzes your contracts, laws, and legal documents with cutting-edge AI. Ask questions in German or English and get precise answers in seconds."
         >
           LexAI analysiert Ihre Verträge, Gesetze und Rechtsdokumente mit
-          künstlicher Intelligenz.
+          modernster KI. Stellen Sie Fragen auf Deutsch oder Englisch und
+          erhalten Sie präzise Antworten in Sekunden.
         </p>
+
         <div class="hero-actions">
-          <a
-            href="/register"
-            class="btn-primary btn-large"
-            data-de="Jetzt kostenlos starten"
-            data-en="Start for Free Now"
-          >
-            Jetzt kostenlos starten
+          <a href="/register" class="btn-primary btn-large">
+            <span>🚀</span>
+            <span
+              data-de="Jetzt kostenlos starten"
+              data-en="Start for Free Now"
+            >
+              Jetzt kostenlos starten
+            </span>
           </a>
           <a
-            href="/login"
+            href="#how-it-works"
             class="btn-outline btn-large"
-            data-de="Anmelden"
-            data-en="Sign In"
-            >Anmelden</a
+            data-de="Wie es funktioniert"
+            data-en="How it works"
           >
+            Wie es funktioniert
+          </a>
+        </div>
+
+        <div class="hero-trust">
+          <span
+            data-de="🔒 Ihre Daten bleiben privat"
+            data-en="🔒 Your data stays private"
+          >
+            🔒 Ihre Daten bleiben privat
+          </span>
+          <span>·</span>
+          <span
+            data-de="⚡ Antworten in Sekunden"
+            data-en="⚡ Answers in seconds"
+          >
+            ⚡ Antworten in Sekunden
+          </span>
+          <span>·</span>
+          <span
+            data-de="🇩🇪 Auf Deutsch verfügbar"
+            data-en="🇩🇪 Available in German"
+          >
+            🇩🇪 Auf Deutsch verfügbar
+          </span>
         </div>
       </div>
 
-      <div class="hero-features">
-        <div class="feature-card">
-          <span class="feature-icon">📄</span>
-          <h3 data-de="PDF-Analyse" data-en="PDF Analysis">PDF-Analyse</h3>
-          <p
-            data-de="Laden Sie beliebige Rechtsdokumente hoch"
-            data-en="Upload any legal documents"
-          >
-            Laden Sie beliebige Rechtsdokumente hoch
-          </p>
+      <!-- Demo Preview -->
+      <div class="hero-demo">
+        <div class="demo-window">
+          <div class="demo-topbar">
+            <div class="demo-dots"><span></span><span></span><span></span></div>
+            <span class="demo-title">LexAI Dashboard</span>
+          </div>
+          <div class="demo-content">
+            <div class="demo-message user">
+              <span
+                data-de="Was sind die Kündigungsfristen in diesem Arbeitsvertrag?"
+                data-en="What are the notice periods in this employment contract?"
+              >
+                Was sind die Kündigungsfristen in diesem Arbeitsvertrag?
+              </span>
+            </div>
+            <div class="demo-message bot">
+              <div class="demo-bot-header">⚖️ LexAI</div>
+              <span
+                data-de="Gemäß §3 des Arbeitsvertrags beträgt die Kündigungsfrist <strong>3 Monate</strong> zum Monatsende. Bei Kündigung durch den Arbeitgeber verlängert sich diese nach 5 Jahren auf <strong>6 Monate</strong>."
+                data-en="According to §3 of the employment contract, the notice period is <strong>3 months</strong> to the end of the month. If terminated by the employer, this extends to <strong>6 months</strong> after 5 years."
+              >
+                Gemäß §3 des Arbeitsvertrags beträgt die Kündigungsfrist
+                <strong>3 Monate</strong> zum Monatsende.
+              </span>
+              <div class="demo-source">📎 Arbeitsvertrag_2024.pdf</div>
+            </div>
+            <div class="demo-message user">
+              <span
+                data-de="Gibt es eine Probezeit?"
+                data-en="Is there a probationary period?"
+              >
+                Gibt es eine Probezeit?
+              </span>
+            </div>
+            <div class="demo-message bot typing">
+              <div class="demo-bot-header">⚖️ LexAI</div>
+              <div class="demo-typing">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="feature-card">
-          <span class="feature-icon">🔍</span>
-          <h3 data-de="Präzise Suche" data-en="Precise Search">
-            Präzise Suche
+      </div>
+    </section>
+
+    <!-- ═══ STATS ═══ -->
+    <section class="stats-section">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-number">⚡</span>
+          <span
+            class="stat-label"
+            data-de="Antworten in Sekunden"
+            data-en="Answers in seconds"
+          >
+            Antworten in Sekunden
+          </span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">🔒</span>
+          <span
+            class="stat-label"
+            data-de="100% Private Dokumente"
+            data-en="100% Private Documents"
+          >
+            100% Private Dokumente
+          </span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">🌍</span>
+          <span
+            class="stat-label"
+            data-de="Deutsch & Englisch"
+            data-en="German & English"
+          >
+            Deutsch & Englisch
+          </span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">📄</span>
+          <span
+            class="stat-label"
+            data-de="Alle Rechtsdokumente"
+            data-en="All Legal Documents"
+          >
+            Alle Rechtsdokumente
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ HOW IT WORKS ═══ -->
+    <section class="how-section" id="how-it-works">
+      <div class="section-header">
+        <h2 data-de="So einfach funktioniert es" data-en="It's this simple">
+          So einfach funktioniert es
+        </h2>
+        <p
+          data-de="In 3 Schritten zu präzisen Rechtsantworten"
+          data-en="3 steps to precise legal answers"
+        >
+          In 3 Schritten zu präzisen Rechtsantworten
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <div class="step-icon">📤</div>
+          <h3 data-de="Dokument hochladen" data-en="Upload Document">
+            Dokument hochladen
           </h3>
           <p
-            data-de="KI findet relevante Klauseln sofort"
-            data-en="AI finds relevant clauses instantly"
+            data-de="Laden Sie beliebige PDF-Rechtsdokumente hoch – Verträge, Gesetze, Urteile oder Behördenschreiben."
+            data-en="Upload any PDF legal documents – contracts, laws, judgments, or official letters."
           >
-            KI findet relevante Klauseln sofort
+            Laden Sie beliebige PDF-Rechtsdokumente hoch.
+          </p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <div class="step-icon">💬</div>
+          <h3 data-de="Frage stellen" data-en="Ask a Question">
+            Frage stellen
+          </h3>
+          <p
+            data-de="Stellen Sie Ihre Frage auf Deutsch oder Englisch – so wie Sie mit einem Anwalt sprechen würden."
+            data-en="Ask your question in German or English – just like talking to a lawyer."
+          >
+            Stellen Sie Ihre Frage auf Deutsch oder Englisch.
+          </p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <div class="step-icon">✅</div>
+          <h3 data-de="Antwort erhalten" data-en="Get Your Answer">
+            Antwort erhalten
+          </h3>
+          <p
+            data-de="LexAI liefert präzise Antworten mit direkten Verweisen auf relevante Klauseln und Paragrafen."
+            data-en="LexAI delivers precise answers with direct references to relevant clauses and paragraphs."
+          >
+            LexAI liefert präzise Antworten mit Quellenangaben.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FEATURES ═══ -->
+    <section class="features-section">
+      <div class="section-header">
+        <h2 data-de="Alles was Sie brauchen" data-en="Everything you need">
+          Alles was Sie brauchen
+        </h2>
+        <p
+          data-de="Entwickelt für Anwälte, Unternehmen und Privatpersonen"
+          data-en="Built for lawyers, businesses, and individuals"
+        >
+          Entwickelt für Anwälte, Unternehmen und Privatpersonen
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3 data-de="Präzise Analyse" data-en="Precise Analysis">
+            Präzise Analyse
+          </h3>
+          <p
+            data-de="KI findet relevante Klauseln und Paragrafen sofort und erklärt sie verständlich."
+            data-en="AI finds relevant clauses and paragraphs instantly and explains them clearly."
+          >
+            KI findet relevante Klauseln sofort.
           </p>
         </div>
         <div class="feature-card">
-          <span class="feature-icon">🔒</span>
+          <div class="feature-icon">🔒</div>
           <h3 data-de="Sicher & Privat" data-en="Secure & Private">
             Sicher & Privat
           </h3>
           <p
-            data-de="Ihre Dokumente bleiben privat"
-            data-en="Your documents stay private"
+            data-de="Ihre Dokumente sind verschlüsselt und nur für Sie zugänglich. Kein Datenweitergabe."
+            data-en="Your documents are encrypted and only accessible to you. No data sharing."
           >
-            Ihre Dokumente bleiben privat
+            Ihre Dokumente bleiben privat.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌍</div>
+          <h3 data-de="Zweisprachig" data-en="Bilingual">Zweisprachig</h3>
+          <p
+            data-de="Vollständige Unterstützung für Deutsch und Englisch – Fragen und Antworten."
+            data-en="Full support for German and English – questions and answers."
+          >
+            Deutsch und Englisch vollständig unterstützt.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📚</div>
+          <h3 data-de="Alle Dokumenttypen" data-en="All Document Types">
+            Alle Dokumenttypen
+          </h3>
+          <p
+            data-de="Verträge, Gesetze, Urteile, Behördenschreiben – LexAI analysiert alles."
+            data-en="Contracts, laws, judgments, official letters – LexAI analyzes everything."
+          >
+            Verträge, Gesetze, Urteile und mehr.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3 data-de="Chat-Verlauf" data-en="Chat History">Chat-Verlauf</h3>
+          <p
+            data-de="Alle Ihre Analysen werden gespeichert und sind jederzeit abrufbar."
+            data-en="All your analyses are saved and accessible at any time."
+          >
+            Alle Analysen gespeichert und abrufbar.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3 data-de="Sofortige Antworten" data-en="Instant Answers">
+            Sofortige Antworten
+          </h3>
+          <p
+            data-de="Keine langen Wartezeiten. Präzise Antworten in wenigen Sekunden."
+            data-en="No long waiting times. Precise answers in just a few seconds."
+          >
+            Präzise Antworten in Sekunden.
           </p>
         </div>
       </div>
-    </main>
+    </section>
+
+    <!-- ═══ USE CASES ═══ -->
+    <section class="usecases-section">
+      <div class="section-header">
+        <h2 data-de="Für wen ist LexAI?" data-en="Who is LexAI for?">
+          Für wen ist LexAI?
+        </h2>
+      </div>
+      <div class="usecases-grid">
+        <div class="usecase-card">
+          <span class="usecase-icon">⚖️</span>
+          <h3 data-de="Anwälte & Kanzleien" data-en="Lawyers & Law Firms">
+            Anwälte & Kanzleien
+          </h3>
+          <p
+            data-de="Schnelle Dokumentenanalyse und Recherche für mehr Effizienz."
+            data-en="Fast document analysis and research for greater efficiency."
+          >
+            Schnelle Analyse für mehr Effizienz.
+          </p>
+        </div>
+        <div class="usecase-card">
+          <span class="usecase-icon">🏢</span>
+          <h3 data-de="Unternehmen" data-en="Businesses">Unternehmen</h3>
+          <p
+            data-de="Verträge und Compliance-Dokumente schnell verstehen und analysieren."
+            data-en="Quickly understand and analyze contracts and compliance documents."
+          >
+            Verträge schnell verstehen.
+          </p>
+        </div>
+        <div class="usecase-card">
+          <span class="usecase-icon">👤</span>
+          <h3 data-de="Privatpersonen" data-en="Individuals">Privatpersonen</h3>
+          <p
+            data-de="Mietverträge, Arbeitsverträge und Behördenschreiben einfach verstehen."
+            data-en="Easily understand rental agreements, employment contracts, and official letters."
+          >
+            Mietverträge einfach verstehen.
+          </p>
+        </div>
+        <div class="usecase-card">
+          <span class="usecase-icon">🎓</span>
+          <h3 data-de="Studierende" data-en="Students">Studierende</h3>
+          <p
+            data-de="Juristische Texte und Urteile analysieren und verstehen."
+            data-en="Analyze and understand legal texts and judgments."
+          >
+            Juristische Texte verstehen.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA ═══ -->
+    <section class="cta-section">
+      <div class="cta-content">
+        <h2 data-de="Bereit loszulegen?" data-en="Ready to get started?">
+          Bereit loszulegen?
+        </h2>
+        <p
+          data-de="Starten Sie kostenlos und analysieren Sie Ihre ersten Dokumente noch heute."
+          data-en="Start for free and analyze your first documents today."
+        >
+          Starten Sie kostenlos und analysieren Sie Ihre ersten Dokumente noch
+          heute.
+        </p>
+        <a href="/register" class="btn-primary btn-large">
+          <span>🚀</span>
+          <span data-de="Jetzt kostenlos starten" data-en="Start for Free Now">
+            Jetzt kostenlos starten
+          </span>
+        </a>
+        <p
+          class="cta-note"
+          data-de="Keine Kreditkarte erforderlich • Sofort loslegen"
+          data-en="No credit card required • Start immediately"
+        >
+          Keine Kreditkarte erforderlich • Sofort loslegen
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <span>⚖️</span>
+          <span>LexAI</span>
+        </div>
+        <p
+          class="footer-note"
+          data-de="LexAI ersetzt keine qualifizierte Rechtsberatung."
+          data-en="LexAI does not replace qualified legal advice."
+        >
+          LexAI ersetzt keine qualifizierte Rechtsberatung.
+        </p>
+        <div class="footer-links">
+          <a href="/login" data-de="Anmelden" data-en="Sign In">Anmelden</a>
+          <a href="/register" data-de="Registrieren" data-en="Register"
+            >Registrieren</a
+          >
+        </div>
+      </div>
+    </footer>
 
     <script src="/static/js/i18n.js"></script>
     <script>

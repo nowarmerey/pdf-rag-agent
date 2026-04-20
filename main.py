@@ -2,18 +2,23 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.requests import Request
-from fastapi.responses import RedirectResponse
 from fastapi.responses import FileResponse
-from app.core.config import APP_NAME, APP_VERSION
+from starlette.middleware.base import BaseHTTPMiddleware
+from app.core.config import APP_NAME, APP_VERSION, UPLOAD_DIR, CHROMA_DIR
 from app.core.database import engine, Base
 from app.api import auth, documents, chat
 import os
 
-
-
-# إنشاء الجداول في قاعدة البيانات
+# إنشاء الجداول
 Base.metadata.create_all(bind=engine)
 
+# إنشاء المجلدات
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+os.makedirs(CHROMA_DIR, exist_ok=True)
+
+# ═══════════════════════════════
+# إنشاء التطبيق
+# ═══════════════════════════════
 app = FastAPI(
     title=APP_NAME,
     version=APP_VERSION,
@@ -21,20 +26,39 @@ app = FastAPI(
     redoc_url="/api/redoc"
 )
 
-# Static files & templates
+# ═══════════════════════════════
+# No Cache Middleware
+# ═══════════════════════════════
+class NoCacheMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        if "/static/" in str(request.url.path):
+            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers["Pragma"] = "no-cache"
+        return response
+
+app.add_middleware(NoCacheMiddleware)
+
+# ═══════════════════════════════
+# Static & Templates
+# ═══════════════════════════════
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+# ═══════════════════════════════
 # API Routes
+# ═══════════════════════════════
 app.include_router(auth.router,      prefix="/api")
 app.include_router(documents.router, prefix="/api")
 app.include_router(chat.router,      prefix="/api")
 
+# ═══════════════════════════════
+# Pages
+# ═══════════════════════════════
 @app.get('/favicon.ico')
 async def favicon():
     return FileResponse('static/favicon.ico')
 
-# Pages
 @app.get("/")
 async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
@@ -53,6 +77,5 @@ async def dashboard(request: Request):
 
 if __name__ == "__main__":
     import uvicorn
-    os.makedirs("uploads", exist_ok=True)
-    os.makedirs("chroma_db", exist_ok=True)
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)

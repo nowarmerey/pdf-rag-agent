@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.location.href = "/login";
     return;
   }
-
+  loadTheme();
   // ربط file input
   document
     .getElementById("file-input")
@@ -337,4 +337,26 @@ function setupTextarea() {
       sendMessage();
     }
   });
+}
+// ═══════════════════════════════
+// Theme Toggle
+// ═══════════════════════════════
+function toggleTheme() {
+  const body = document.body;
+  const btn = document.getElementById("theme-btn");
+  const isLight = body.classList.toggle("light-mode");
+
+  btn.textContent = isLight ? "🌙" : "☀️";
+  localStorage.setItem("lexai_theme", isLight ? "light" : "dark");
+}
+
+function loadTheme() {
+  const theme = localStorage.getItem("lexai_theme");
+  const btn = document.getElementById("theme-btn");
+  if (theme === "light") {
+    document.body.classList.add("light-mode");
+    if (btn) btn.textContent = "🌙";
+  } else {
+    if (btn) btn.textContent = "☀️";
+  }
 }

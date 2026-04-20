@@ -1199,3 +1199,88 @@ body {
     max-width: 90%;
   }
 }
+/* ═══════════════════════════════════════
+   Light Mode
+═══════════════════════════════════════ */
+body.light-mode {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f6f8fa;
+  --bg-card: #ffffff;
+  --bg-hover: #f3f4f6;
+  --bg-glass: rgba(255, 255, 255, 0.9);
+  --border: #d0d7de;
+  --border-light: #d0d7de;
+  --text-primary: #1f2328;
+  --text-secondary: #656d76;
+  --text-muted: #9198a1;
+  --accent-glow: rgba(29, 111, 235, 0.08);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+body.light-mode .auth-page {
+  background:
+    radial-gradient(
+      ellipse at 20% 50%,
+      rgba(29, 111, 235, 0.05) 0%,
+      transparent 60%
+    ),
+    #f6f8fa;
+}
+
+body.light-mode .auth-card {
+  background: white;
+  box-shadow: var(--shadow-lg);
+}
+
+body.light-mode .landing-page {
+  background:
+    radial-gradient(
+      ellipse at 10% 30%,
+      rgba(29, 111, 235, 0.06) 0%,
+      transparent 50%
+    ),
+    #ffffff;
+}
+
+body.light-mode .nav {
+  background: rgba(246, 248, 250, 0.9);
+}
+
+body.light-mode .message-content code {
+  background: #f6f8fa;
+  color: var(--accent);
+}
+
+body.light-mode .user-message .message-bubble {
+  background: var(--accent);
+  color: white;
+}
+
+body.light-mode .assistant-message .message-bubble {
+  background: #f6f8fa;
+  border: 1px solid var(--border);
+}
+
+body.light-mode .typing-dots span {
+  background: var(--text-muted);
+}
+
+body.light-mode .btn-theme {
+  color: #d29922;
+}
+
+/* Theme Button */
+.btn-theme {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+.btn-theme:hover {
+  background: var(--bg-hover);
+}

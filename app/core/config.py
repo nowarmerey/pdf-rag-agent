@@ -57,4 +57,4 @@ SUPPORTED_EXTENSIONS = {
 # Legal AI Settings
 # ═══════════════════════════════
 SUPPORTED_LANGUAGES = ["de", "en"]
-DEFAULT_LANGUAGE    = "de"س
+DEFAULT_LANGUAGE    = "de"

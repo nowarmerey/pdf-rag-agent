@@ -96,13 +96,28 @@ async function loadDocuments() {
   }
 }
 
+function getFileIcon(filename) {
+  const ext = filename.split(".").pop().toLowerCase();
+  const icons = {
+    pdf: "📄",
+    docx: "📝",
+    doc: "📝",
+    jpg: "🖼️",
+    jpeg: "🖼️",
+    png: "🖼️",
+    webp: "🖼️",
+  };
+  return icons[ext] || "📄";
+}
+
 function renderDocuments(docs) {
   const list = document.getElementById("documents-list");
   if (!docs.length) {
     list.innerHTML = `
             <div class="empty-state">
                 <span>📄</span>
-                <p data-de="Keine Dokumente" data-en="No documents">Keine Dokumente</p>
+                <p data-de="Keine Dokumente" 
+                   data-en="No documents">Keine Dokumente</p>
             </div>`;
     setLang(getLang());
     return;
@@ -112,7 +127,7 @@ function renderDocuments(docs) {
       (doc) => `
         <div class="doc-item" id="doc-${doc.id}">
             <div class="doc-info">
-                <span class="doc-icon">📄</span>
+                <span class="doc-icon">${getFileIcon(doc.filename)}</span>
                 <div>
                     <p class="doc-name">${doc.filename}</p>
                     <p class="doc-meta">${doc.file_size} MB · ${doc.chunks_count} chunks</p>

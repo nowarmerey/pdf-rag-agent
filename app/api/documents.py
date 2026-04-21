@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
 from sqlalchemy.orm import Session
 from app.core.database import get_db
-from app.core.config import UPLOAD_DIR, MAX_FILE_SIZE_MB
+from app.core.config import UPLOAD_DIR, MAX_FILE_SIZE_MB, SUPPORTED_EXTENSIONS
 from app.api.auth import get_current_user
 from app.models.user import User
 from app.models.document import Document
 from app.schemas.document import DocumentResponse
-from app.services.pdf_service import extract_text_from_pdf, split_text_into_chunks
+from app.services.pdf_service import extract_text, split_text_into_chunks
 from app.services.vector_service import add_chunks_to_db, delete_user_document
-import os, shutil
 from typing import List
+import os, shutil
 
 router = APIRouter(prefix="/documents", tags=["Documents"])
 
@@ -20,16 +20,18 @@ async def upload_document(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """رفع PDF جديد"""
+    """رفع ومعالجة الملفات (PDF, Word, Images)"""
+
     # التحقق من نوع الملف
-    if not file.filename.endswith(".pdf"):
+    extension = os.path.splitext(file.filename)[1].lower()
+    if extension not in SUPPORTED_EXTENSIONS:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Only PDF files are supported"
+            detail=f"Unsupported file type. Supported: {', '.join(SUPPORTED_EXTENSIONS.keys())}"
         )
 
     # التحقق من الحجم
-    content = await file.read()
+    content      = await file.read()
     file_size_mb = len(content) / (1024 * 1024)
     if file_size_mb > MAX_FILE_SIZE_MB:
         raise HTTPException(
@@ -46,31 +48,43 @@ async def upload_document(
     with open(file_path, "wb") as f:
         f.write(content)
 
-    # معالجة PDF
-    text = extract_text_from_pdf(file_path)
-    if not text.strip():
-        os.remove(file_path)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Could not extract text from PDF"
+    try:
+        # استخراج النص حسب نوع الملف
+        text = extract_text(file_path, file.filename)
+
+        if not text.strip():
+            os.remove(file_path)
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Could not extract text from file"
+            )
+
+        # تقسيم وحفظ في Vector DB
+        chunks       = split_text_into_chunks(text, file.filename)
+        chunks_count = add_chunks_to_db(chunks, current_user.id)
+
+        # حفظ في PostgreSQL
+        document = Document(
+            filename     = file.filename,
+            file_size    = round(file_size_mb, 2),
+            chunks_count = chunks_count,
+            user_id      = current_user.id
         )
+        db.add(document)
+        db.commit()
+        db.refresh(document)
 
-    # تقسيم وحفظ في Vector DB
-    chunks = split_text_into_chunks(text, file.filename)
-    chunks_count = add_chunks_to_db(chunks, current_user.id)
+        return document
 
-    # حفظ في PostgreSQL
-    document = Document(
-        filename=file.filename,
-        file_size=round(file_size_mb, 2),
-        chunks_count=chunks_count,
-        user_id=current_user.id
-    )
-    db.add(document)
-    db.commit()
-    db.refresh(document)
-
-    return document
+    except HTTPException:
+        raise
+    except Exception as e:
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error processing file: {str(e)}"
+        )
 
 @router.get("/", response_model=List[DocumentResponse])
 def list_documents(
@@ -90,7 +104,7 @@ def delete_document(
 ):
     """حذف ملف"""
     document = db.query(Document).filter(
-        Document.id == document_id,
+        Document.id      == document_id,
         Document.user_id == current_user.id
     ).first()
 

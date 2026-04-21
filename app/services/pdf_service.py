@@ -2,12 +2,12 @@ import fitz  # PyMuPDF
 import docx
 import google.generativeai as genai
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from app.core.config import CHUNK_SIZE, CHUNK_OVERLAP, GEMINI_API_KEY
+from app.core.config import CHUNK_SIZE, CHUNK_OVERLAP, GEMINI_API_KEY, GEMINI_MODEL
 import base64
 import os
 
 genai.configure(api_key=GEMINI_API_KEY)
-vision_model = genai.GenerativeModel('gemini-2.0-flash')
+vision_model = genai.GenerativeModel(GEMINI_MODEL)
 
 # ═══════════════════════════════════════════
 # Text Extraction

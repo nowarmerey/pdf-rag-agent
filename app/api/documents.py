@@ -79,6 +79,8 @@ async def upload_document(
     except HTTPException:
         raise
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         if os.path.exists(file_path):
             os.remove(file_path)
         raise HTTPException(

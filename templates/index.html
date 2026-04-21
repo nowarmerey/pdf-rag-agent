@@ -57,11 +57,17 @@
           </span>
         </div>
 
-        <h1
-          data-de="Rechtsdokumente verstehen –<br>schnell und präzise"
-          data-en="Understand Legal Documents –<br>Fast and Precise"
-        >
-          Rechtsdokumente verstehen –<br />schnell und präzise
+        <h1>
+          <span
+            data-de="Rechtsdokumente verstehen –"
+            data-en="Understand Legal Documents –"
+          >
+            Rechtsdokumente verstehen –
+          </span>
+          <br />
+          <span data-de="schnell und präzise" data-en="Fast and Precise">
+            schnell und präzise
+          </span>
         </h1>
 
         <p
@@ -135,12 +141,11 @@
             </div>
             <div class="demo-message bot">
               <div class="demo-bot-header">⚖️ LexAI</div>
-              <span
-                data-de="Gemäß §3 des Arbeitsvertrags beträgt die Kündigungsfrist <strong>3 Monate</strong> zum Monatsende. Bei Kündigung durch den Arbeitgeber verlängert sich diese nach 5 Jahren auf <strong>6 Monate</strong>."
-                data-en="According to §3 of the employment contract, the notice period is <strong>3 months</strong> to the end of the month. If terminated by the employer, this extends to <strong>6 months</strong> after 5 years."
-              >
-                Gemäß §3 des Arbeitsvertrags beträgt die Kündigungsfrist
-                <strong>3 Monate</strong> zum Monatsende.
+              <span>
+                Gemäß §3 beträgt die Kündigungsfrist
+                <strong>3 Monate</strong> zum Monatsende. Bei Kündigung durch
+                den Arbeitgeber verlängert sich diese auf
+                <strong>6 Monate</strong>.
               </span>
               <div class="demo-source">📎 Arbeitsvertrag_2024.pdf</div>
             </div>
@@ -459,7 +464,6 @@
 
     <script src="/static/js/i18n.js"></script>
     <script>
-      // إذا المستخدم مسجّل دخول، روّحه للـ Dashboard
       const token = localStorage.getItem("lexai_token");
       if (token) window.location.href = "/dashboard";
     </script>

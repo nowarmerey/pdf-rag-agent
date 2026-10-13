@@ -1,96 +1,89 @@
-# ⚖️ LexAI - Legal Document Assistant
+# ⚖️ LexAI — AI Legal-Document Assistant
 
-> AI-powered legal document analysis platform for law firms and legal professionals.
+> Upload contracts, laws or scans and ask questions about them in German or English.
+> A multi-user SaaS built on a **RAG pipeline** (Retrieval-Augmented Generation).
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)
-![License](https://img.shields.io/badge/License-MIT-yellow)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688)
+![pgvector](https://img.shields.io/badge/PostgreSQL-pgvector-336791)
+![Gemini](https://img.shields.io/badge/Google-Gemini-8E75B2)
 
-## 🎯 Overview
-
-LexAI allows legal professionals to upload PDF documents and ask questions
-about them in German or English. The AI analyzes contracts, laws, and legal
-documents with precision.
+Part of my portfolio → **[nawarmeree.com](https://nawarmeree.com)**
 
 ## ✨ Features
 
-- 📄 PDF upload and intelligent text extraction
-- 🔍 Semantic search using Vector Database (ChromaDB)
-- 🤖 AI-powered legal analysis (Google Gemini)
-- 👤 Multi-user system with JWT authentication
-- 💬 Chat history per user
-- 🌍 Bilingual interface (German / English)
-- 🔒 Secure - each user sees only their documents
+- 📄 **Multi-format ingestion** — PDF (PyMuPDF), Word (`.docx`) and images (`.jpg`, `.png`, `.webp`) read with **Gemini Vision**
+- ✂️ **Chunking** with LangChain's `RecursiveCharacterTextSplitter`
+- 🧠 **Embeddings** with `gemini-embedding-001` (768 dimensions)
+- 🔍 **Semantic search** in **PostgreSQL + pgvector** (Supabase); local ChromaDB fallback for development
+- 🤖 **Answers** from Google Gemini, grounded in the retrieved passages
+- 👤 **Multi-user**: JWT authentication, every user only sees their own documents and chat history
+- 🌍 **Bilingual UI** (German / English) with dark & light mode
+- ☁️ **Deployed** on Railway (`Procfile`), database on Supabase
 
-## 🛠️ Tech Stack
+## 🔄 How it works
 
-| Layer      | Technology              |
-| ---------- | ----------------------- |
-| Backend    | FastAPI + Python 3.11   |
-| Database   | PostgreSQL (Supabase)   |
-| Vector DB  | ChromaDB                |
-| Embeddings | Sentence Transformers   |
-| LLM        | Google Gemini           |
-| Auth       | JWT (python-jose)       |
-| Frontend   | HTML + CSS + Vanilla JS |
+```
+upload ─▶ extract text (PDF / Word / Gemini Vision) ─▶ chunk ─▶ embed (Gemini)
+       ─▶ store vectors (pgvector, per user)
+question ─▶ embed ─▶ nearest chunks (pgvector) ─▶ Gemini answers with the retrieved context
+```
 
-## 🚀 Quick Start
+## 🛠️ Tech stack
 
-### 1. Clone the repository
+| Layer      | Technology                                        |
+| ---------- | ------------------------------------------------- |
+| Backend    | FastAPI · Python 3.11 · SQLAlchemy                |
+| Database   | PostgreSQL (Supabase) + **pgvector**              |
+| Embeddings | Google `gemini-embedding-001`                     |
+| LLM        | Google Gemini (text + vision)                     |
+| Parsing    | PyMuPDF · python-docx · LangChain text splitters  |
+| Auth       | JWT (python-jose) · passlib/bcrypt                |
+| Frontend   | HTML · CSS · vanilla JS (i18n DE/EN)              |
+| Hosting    | Railway                                           |
+
+## 🚀 Quick start
 
 ```bash
-git clone https://github.com/yourusername/pdf-rag-agent.git
+git clone https://github.com/nowarmerey/pdf-rag-agent.git
 cd pdf-rag-agent
-```
 
-### 2. Create environment
-
-```bash
-conda create -n rag-agent python=3.11
-conda activate rag-agent
+python -m venv .venv && source .venv/bin/activate   # or conda
 pip install -r requirements.txt
+
+cp .env.example .env    # then fill in the values below
+python main.py          # → http://localhost:8000
 ```
 
-### 3. Configure environment variables
+## ⚙️ Environment variables
 
-```bash
-cp .env.example .env
-# Edit .env with your keys
+| Variable                      | Purpose                                            |
+| ----------------------------- | -------------------------------------------------- |
+| `GEMINI_API_KEY`              | Google AI Studio key (embeddings, answers, vision) |
+| `DATABASE_URL`                | PostgreSQL with the `pgvector` extension           |
+| `SECRET_KEY`                  | JWT signing key                                    |
+| `ALGORITHM`                   | JWT algorithm (default `HS256`)                    |
+| `ACCESS_TOKEN_EXPIRE_MINUTES` | Token lifetime (default `1440`)                    |
+
+## 📁 Project structure
+
 ```
-
-### 4. Run the application
-
-```bash
-python main.py
-```
-
-Open http://localhost:8000
-
-## ⚙️ Environment Variables
-
-Create a `.env` file with the following:
-GEMINI_API_KEY=your_gemini_api_key
-DATABASE_URL=your_postgresql_url
-SECRET_KEY=your_secret_key
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=1440
-
-## 📁 Project Structure
-
 pdf-rag-agent/
 ├── app/
-│ ├── api/ # API endpoints
-│ ├── core/ # Config, Database, Security
-│ ├── models/ # SQLAlchemy models
-│ ├── schemas/ # Pydantic schemas
-│ └── services/ # Business logic
-├── static/ # CSS, JS
-├── templates/ # HTML templates
+│   ├── api/        # REST endpoints: auth, documents, chat
+│   ├── core/       # config, database, security (JWT)
+│   ├── models/     # SQLAlchemy models
+│   ├── schemas/    # Pydantic schemas
+│   └── services/   # pdf_service (extraction), vector_service (pgvector), llm_service (Gemini)
+├── static/         # CSS, JS (incl. i18n)
+├── templates/      # HTML pages
 └── main.py
+```
 
 ## 👨‍💻 Author
 
-**Nawar Meree** - Full Stack Developer
+**Nawar Meree** — System Administrator & SaaS Developer · Leverkusen, Germany
 
-- GitHub: [@nowarmerey](https://github.com/nowarmerey)
-- LinkedIn: [nawar-meree-036491164](https://linkedin.com/in/nawar-meree-036491164)
+- 🌐 [nawarmeree.com](https://nawarmeree.com)
+- 💼 [LinkedIn](https://www.linkedin.com/in/nawar-meree-036491164)
+- 🐙 [GitHub](https://github.com/nowarmerey)
